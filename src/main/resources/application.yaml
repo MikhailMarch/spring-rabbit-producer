@@ -1,4 +1,4 @@
 server:
   port: 8080
 rabbit:
-  host: ${HOST_NAME}
+  host: ${RABBIT_HOST_NAME}

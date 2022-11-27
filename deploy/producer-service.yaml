@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: producer
+  labels:
+    name: producer
+spec:
+  ports:
+    - nodePort: 30162
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: producer
+  type: NodePort

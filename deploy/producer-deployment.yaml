@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer
+spec:
+  selector:
+    matchLabels:
+      app: producer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: producer
+    spec:
+      containers:
+        - name: producer
+          image: mikhailmarch/rabbit-producer:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: RABBIT_HOST_NAME
+              value: "rabbitmq"

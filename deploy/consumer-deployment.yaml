@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer
+spec:
+  selector:
+    matchLabels:
+      app: consumer
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+        - name: consumer
+          image: mikhailmarch/rabbit-consumer:latest
+          ports:
+            - containerPort: 8090
+          env:
+            - name: PORT
+              value: "8081"
+            - name: DB_URL
+              value: "jdbc:postgresql://postgres:5432/postgres"
+            - name: DB_USERNAME
+              value: postgres
+            - name: DB_PASSWORD
+              value: postgres_password
+            - name: RABBIT_HOST_NAME
+              value: "rabbitmq"
