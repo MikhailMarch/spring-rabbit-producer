@@ -1,0 +1,4 @@
+server:
+  port: 8080
+rabbit:
+  host: ${HOST_NAME}
