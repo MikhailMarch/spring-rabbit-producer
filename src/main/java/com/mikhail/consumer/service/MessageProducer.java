@@ -22,11 +22,12 @@ public class MessageProducer {
 
     @Scheduled(fixedDelay = 10000)
     public void produceRecord() throws JsonProcessingException {
-        log.error("trying to generate record");
         var record = generateRecord();
-        log.info("sending record {}", objectMapper.writeValueAsString(record));
 
-        template.convertAndSend("user", objectMapper.writeValueAsString(record));
+        String rec = objectMapper.writeValueAsString(record);
+        log.info("sending record {}", rec);
+
+        template.convertAndSend("user", rec);
     }
 
     public UserDto generateRecord() {

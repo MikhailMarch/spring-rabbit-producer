@@ -9,30 +9,14 @@ services:
       - "5672:5672"
       - "15672:15672"
 
-  db:
+  postgre:
     image: 'postgres'
-    container_name: db
+    container_name: postgre
     mem_limit: 512m
     mem_reservation: 128M
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-
-  listener:
-    image: mikhailmarch/rabbit-consumer:latest
-    mem_limit: 512m
-    mem_reservation: 128M
-    build:
-      context: .
-    container_name: listener
-    depends_on:
-      - db
-      - rabbitmq
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
-      - RABBIT_HOST=rabbitmq
+      - POSTGRES_PASSWORD=postgres_pass
 
   producer:
     image: mikhailmarch/rabbit-producer:latest
@@ -44,4 +28,20 @@ services:
     depends_on:
       - rabbitmq
     environment:
+      - RABBIT_HOST=rabbitmq
+
+  consumer:
+    image: mikhailmarch/rabbit-consumer:latest
+    mem_limit: 512m
+    mem_reservation: 128M
+    build:
+      context: .
+    container_name: consumer
+    depends_on:
+      - postgre
+      - rabbitmq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgre:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres_pass
       - RABBIT_HOST=rabbitmq
